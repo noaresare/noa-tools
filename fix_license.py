@@ -35,7 +35,9 @@ def write_with_substitution(output_filename, lines, match_offset):
                 f.write("\n".join(GOOD))
                 f.write("\n")
             elif i > match_offset + len(BAD) - 1:
-                f.write(lines[i] + "\n")
+                f.write(lines[i])
+                if i < len(lines) - 1:
+                    f.write("\n")
 
 
 def replace_lines(file_name):

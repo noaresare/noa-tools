@@ -5,6 +5,7 @@ import re
 
 # determines the size of the diff merged for the provided PR id's
 import sys
+import collections
 
 PR_IDS = [18, 30, 31, 34, 72, 79, 94, 104, 105, 106, 109, 110, 119, 123, 129]
 
@@ -45,9 +46,14 @@ def get_merge_diff_length(sha1, git_dir):
 
 
 def main(git_dir, ids):
+    sizes = collections.defaultdict(list)
     for pr_id, sha1 in get_commit_ids(git_dir, ids):
-        print "pr_id: %d diff size: %d" % (
-            pr_id, get_merge_diff_length(sha1, git_dir))
+        sizes[get_merge_diff_length(sha1, git_dir)].append(pr_id)
+    for size in sorted(sizes.keys(), key=lambda x: -x):
+        pr_ids = sizes.get(size)
+        for pr_id in pr_ids:
+            print ("https://github.com/spotify/docker-client/pull/{:<3} {}"
+                   .format(pr_id, size))
 
 if __name__ == '__main__':
     main(sys.argv[1], (int(pr_id) for pr_id in sys.argv[2:]))

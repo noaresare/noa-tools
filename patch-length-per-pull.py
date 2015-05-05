@@ -52,7 +52,7 @@ def main(git_dir, ids):
     for size in sorted(sizes.keys(), key=lambda x: -x):
         pr_ids = sizes.get(size)
         for pr_id in pr_ids:
-            print ("https://github.com/spotify/docker-client/pull/{:<3} {}"
+            print ("https://github.com/spotify/docker-client/pull/{:<3} (diff size: {} lines)"
                    .format(pr_id, size))
 
 if __name__ == '__main__':
